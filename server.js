@@ -1,57 +1,71 @@
-var cheerio = require("cheerio");
+var express = require("express");
+var logger = require("morgan");
+var mongoose = require("mongoose");
+
 var axios = require("axios");
+var cheerio = require("cheerio");
 
-console.log("Getting headlines from The Washington Post");
+// Require all models
+var db = require("./models");
 
-axios.get("https://www.washingtonpost.com/").then(function(resp) {
-  var $ = cheerio.load(resp.data);
+var PORT = 3000;
 
-  var results = [];
+// Initialize Express
+var app = express();
 
-  $("div.headline").each(function(i, element) {
-    // Save the text of the child of the h2-tag with class 'title' as "title"
-    let parent = $(element).parent();
+// Use morgan for logging requests
+app.use(logger("dev"));
+// Parse request body as JSON
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+// Make public a static folder
+app.use(express.static("public"));
 
-    var title = $(element).children().text();
-    console.log(title);
+// Connect to the Mongo DB
+mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
 
-    var link = $(element).children().attr("href");
-    console.log(link);
-    // console.log(title);
-
-    // var link = $(element).children().attr("href");
-    // // console.log(link);
-
-    // // Make an object with data we scraped for this h4 and push it to the results array
-    // results.push({
-    //   title: title,
-    //   link: link
-    // });
+// Scrape data from one site and place it into the mongodb db
+app.get("/scrape", function(req, res) {
+  // Make a request via axios for the news section of `ycombinator`
+  axios.get("http://www.echojs.com/").then(function(response) {
+    // Load the html body from axios into cheerio
+    var $ = cheerio.load(response.data);
+    // Now, we grab every h2 within an article tag, and do the following:
+    $("article h2").each(function(i, element) {
+      let article = {};
+      // Add the text and href of every link, and save them as properties of the result object
+      article.title = $(element).children("a").text();
+      article.link = $(element).children("a").attr("href");
+      // Create a new Article using the `article` object built from scraping
+      db.Article.create(article)
+        .then(function(dbArticle) {
+          // View the added result in the console
+          console.log(dbArticle);
+        })
+        .catch(function(err) {
+          // If an error occurred, log it
+          console.log(err);
+        });
+      });
+    });
+    res.send("Scraping complete");
   });
-  console.log(results);
+
+// Get all articles
+app.get("/articles", function(req, res) {
+  db.Article.find({})
+  .then(function(dbArticle) {
+    // If we were able to successfully find Articles, send them back to the client
+    // console.log(dbArticle);
+    res.send(dbArticle);
+  })
+  .catch(function(err) {
+    // If an error occurred, send it to the client
+    res.send(err);
+  });
 });
 
-
-
-
-// axios.get("https://www.foxnews.com/").then(function(resp) {
-//   var $ = cheerio.load(resp.data);
-
-//   var results = [];
-
-//   $("h2.title").each(function(i, element) {
-//     // Save the text of the child of the h2-tag with class 'title' as "title"
-//     var title = $(element).children().text();
-//     // console.log(title);
-
-//     var link = $(element).children().attr("href");
-//     // console.log(link);
-
-//     // Make an object with data we scraped for this h4 and push it to the results array
-//     results.push({
-//       title: title,
-//       link: link
-//     });
-//   });
-//   console.log(results);
-// });
+// Listen on port 3000
+app.listen(3000, function() {
+  console.log("App running on port " + PORT + "!");
+});
