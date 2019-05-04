@@ -173,7 +173,20 @@ app.get("/notes/:id", function(req, res) {
   db.Note.findOne({ _id: req.params.id })
   .then(function(dbNotes) {
     console.log(dbNotes);
-    res.render("displayNotes", {data: dbNotes} );
+    res.json(dbNotes)
+    // res.render("displayNotes", {data: dbNotes} );
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+});
+
+// Delete one specific note
+app.delete("/notes/:id", function(req, res) {
+  db.Note.deleteOne({ _id: req.params.id })
+  .then(function(dbNotes) {
+    console.log('deleted: ' + dbNotes);
+    res.send(dbNotes);
   })
   .catch(function(err) {
     res.json(err);
