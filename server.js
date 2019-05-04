@@ -25,9 +25,9 @@ app.use(express.static("public"));
 mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
 
 
-app.get("/", function(req, res) {
-  res.render("index");
-});
+// app.get("/", function(req, res) {
+//   res.render("index");
+// });
 
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function(req, res) {
@@ -78,10 +78,10 @@ app.get("/articles", function(req, res) {
   });
 });
 
-// Get all articles
+// Get one specific article
 app.get("/articles/:id", function(req, res) {
   db.Article.findOne({ _id: req.params.id })
-  .populate("note")
+  .populate("notes")
   .then(function(dbArticle) {
     // If we were able to successfully find Articles, send them back to the client
     // console.log(dbArticle);
@@ -92,6 +92,21 @@ app.get("/articles/:id", function(req, res) {
     res.json(err);
   });
 });
+
+// POST a note on a specific article
+app.post("/articles/:id", function(req, res) {
+  db.Note.create(req.body)
+    .then(function(dbNote) {
+      return db.Article.findOneAndUpdate({ _id: req.params.id }, {$push: { notes: dbNote._id }}, { new: true });
+    })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
 
 // Listen on port 3000
 app.listen(3000, function() {
