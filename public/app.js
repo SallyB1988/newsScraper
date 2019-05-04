@@ -6,18 +6,10 @@ window.onload = function() {
     type: "GET",
     url: "/articles"
   })
-  .then(function(data) {  // update the screen
-    console.log("**************************************");
-    console.log(data);
+  .then(function(data) {  // update the articles shown
     $articles.empty();
     for (var i=0; i<data.length; i++) {
-      $articles.append(`
-      <div class="article-card">
-      <h3>${data[i].title}</h3>
-      <p>${data[i].link}</p>
-      <hr>
-      </div>
-      `);
+      $articles.append(articleCard(data[i]));
     }
   })
 
@@ -25,7 +17,6 @@ window.onload = function() {
 
 // Click scrape button function
 $(document).on("click", "#scrape", function() {
-  console.log("yaaaaa");
   // Run a GET request to scrape the articles
   $.ajax({
     method: "GET",
@@ -43,19 +34,9 @@ $(document).on("click", "#scrape", function() {
       })
       .then(function(data) {
         let $articles = $("#articles");
-
-        console.log("**************************************");
-        console.log(data);
-        console.log(data.length);
         $articles.empty();
         for (var i=0; i<data.length; i++) {
-          $articles.append(`
-          <div class="article-card">
-          <h3>${data[i].title}</h3>
-          <p>${data[i].link}</p>
-          <hr>
-          </div>
-          `);
+          $articles.append(articleCard(data[i]));
         }
       })
     });
@@ -66,12 +47,13 @@ $(document).on("click", "#scrape", function() {
 });
 
 
-// Whenever someone clicks a p tag
-$(document).on("click", "p", function() {
+// Whenever someone clicks an h3 tag
+$(document).on("click", "h3", function() {
   // Empty the notes from the note section
   $("#notes").empty();
   // Save the id from the p tag
   var thisId = $(this).attr("data-id");
+  console.log(thisId);
 
   // Now make an ajax call for the Article
   $.ajax({
@@ -99,6 +81,8 @@ $(document).on("click", "p", function() {
       }
     });
 });
+
+
 
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
@@ -130,4 +114,13 @@ $(document).on("click", "#savenote", function() {
 });
 
 
-// showArticles();
+const articleCard = (data) => {
+  let htmlStr =  `
+      <article data-id=${data._id} class="article-card">
+      <h3 data-id=${data._id}>${data.title}</h3>
+      <a data-id=${data._id} href="${data.link}">Read Article</a>
+      <hr>
+      </article>
+      `;
+  return(htmlStr);
+}

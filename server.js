@@ -18,7 +18,7 @@ app.use(logger("dev"));
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// Make public a static folder
+// Make public a static folder -- this uses index.html as default
 app.use(express.static("public"));
 
 // Connect to the Mongo DB
@@ -44,14 +44,14 @@ app.get("/scrape", function(req, res) {
       article.link = $(element).children("a").attr("href");
       // Create a new Article using the `article` object built from scraping
       db.Article.create(article)
-        .then(function(dbArticle) {
-          // View the added result in the console
-          console.log(dbArticle);
-        })
-        .catch(function(err) {
-          // If an error occurred, log it
-          console.log(err);
-        });
+        // .then(function(dbArticle) {
+        //   // View the added result in the console - this takes too long
+        //   // console.log(dbArticle);
+        // })
+        // .catch(function(err) {
+        //   // If an error occurred, log it
+        //   console.log(err);
+        // });
       });
       // console.log(articlesData.length);
       // return(articlesData.length)
@@ -59,12 +59,9 @@ app.get("/scrape", function(req, res) {
     .then(
       db.Article.find()
       .then(function(articles) {
-        console.log(articles.length);
-        res.send(articles.length)
+        res.send("Articles Scraped");
       })
       )
-      res.send("Articles Scraped");
-    // res.render("index");
   });
 
 // Get all articles
@@ -78,6 +75,21 @@ app.get("/articles", function(req, res) {
   .catch(function(err) {
     // If an error occurred, send it to the client
     res.send(err);
+  });
+});
+
+// Get all articles
+app.get("/articles/:id", function(req, res) {
+  db.Article.findOne({ _id: req.params.id })
+  .populate("note")
+  .then(function(dbArticle) {
+    // If we were able to successfully find Articles, send them back to the client
+    // console.log(dbArticle);
+    res.json(dbArticle);
+  })
+  .catch(function(err) {
+    // If an error occurred, send it to the client
+    res.json(err);
   });
 });
 
