@@ -1,4 +1,6 @@
 var express = require("express");
+var exphbs = require("express-handlebars");
+
 var logger = require("morgan");
 var mongoose = require("mongoose");
 
@@ -20,12 +22,29 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 // Make public a static folder -- this uses index.html as default
 app.use(express.static("public"));
+// app.use(express.static(__dirname + "/public"));
+
+// Handlebars
+app.engine(
+  "handlebars",
+  exphbs({
+    defaultLayout: "main"
+  })
+);
+app.set("view engine", "handlebars");
 
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
 
+
+  // Load index page
+  app.get("/", function(req, res) {
+    res.render("index");
+  });
+
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function(req, res) {
+  console.log('inside scraper');
   // Make a request via axios for the news section of `ycombinator`
   axios.get("http://www.echojs.com/").then(function(response) {
     // Load the html body from axios into cheerio
@@ -53,6 +72,7 @@ app.get("/scrape", function(req, res) {
     })
     .then(function(num) {
       res.send(`${num} articles found`)
+      // res.render("/", );
     })
   });
 

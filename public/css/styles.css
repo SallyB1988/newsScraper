@@ -3,6 +3,7 @@
   margin-left: auto;
   margin-right: auto;
   padding-top: 5%;
+  background-color: rgb(255, 250, 246);
 }
 #articles {
   display: inline-block;
@@ -26,4 +27,8 @@ input {
 textarea {
   height: 200px;
   font-size: 18px;
+}
+
+#article-titlebar {
+  background-color: rgb(236, 160, 160);
 }
