@@ -24,11 +24,6 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
 
-
-// app.get("/", function(req, res) {
-//   res.render("index");
-// });
-
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function(req, res) {
   // Make a request via axios for the news section of `ycombinator`
@@ -44,36 +39,32 @@ app.get("/scrape", function(req, res) {
       article.link = $(element).children("a").attr("href");
       // Create a new Article using the `article` object built from scraping
       db.Article.create(article)
-        // .then(function(dbArticle) {
-        //   // View the added result in the console - this takes too long
-        //   // console.log(dbArticle);
-        // })
-        // .catch(function(err) {
-        //   // If an error occurred, log it
-        //   console.log(err);
-        // });
+        .then(function(dbArticle) {
+          // View the added result in the console - this is slow
+          // console.log(dbArticle);
+        })
+        .catch(function(err) {
+          // If an error occurred, log it
+          console.log(err);
+        });
       });
       // console.log(articlesData.length);
-      // return(articlesData.length)
+      return(articlesData.length)
     })
-    .then(
-      db.Article.find()
-      .then(function(articles) {
-        res.send("Articles Scraped");
-      })
-      )
+    .then(function(num) {
+      res.send(`${num} articles found`)
+    })
   });
+
+// Routes for ARTICLES ==================================
 
 // Get all articles
 app.get("/articles", function(req, res) {
   db.Article.find({})
   .then(function(dbArticle) {
-    // If we were able to successfully find Articles, send them back to the client
-    // console.log(dbArticle);
     res.send(dbArticle);
   })
   .catch(function(err) {
-    // If an error occurred, send it to the client
     res.send(err);
   });
 });
@@ -83,12 +74,9 @@ app.get("/articles/:id", function(req, res) {
   db.Article.findOne({ _id: req.params.id })
   .populate("notes")
   .then(function(dbArticle) {
-    // If we were able to successfully find Articles, send them back to the client
-    // console.log(dbArticle);
     res.json(dbArticle);
   })
   .catch(function(err) {
-    // If an error occurred, send it to the client
     res.json(err);
   });
 });
@@ -105,6 +93,31 @@ app.post("/articles/:id", function(req, res) {
     .catch(function(err) {
       res.json(err);
     });
+});
+
+
+// Routes for NOTES ==================================
+
+// Get all notes
+app.get("/notes", function(req, res) {
+  db.Note.find({})
+  .then(function(data) {
+    res.send(data);
+  })
+  .catch(function(err) {
+    res.send(err);
+  });
+});
+
+// Get one specific note
+app.get("/notes/:id", function(req, res) {
+  db.Note.findOne({ _id: req.params.id })
+  .then(function(data) {
+    res.json(data);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
 });
 
 
