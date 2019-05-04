@@ -80,7 +80,7 @@ app.get("/scrape", function(req, res) {
 
 // Get all articles
 app.get("/articles", function(req, res) {
-  db.Article.find({})
+  db.Article.find()
   .then(function(dbArticle) {
     res.send(dbArticle);
   })
@@ -117,9 +117,12 @@ app.post("/articles/:id", function(req, res) {
 // Routes for SAVED articles =========================
 // Get all saved articles
 app.get("/saved", function(req, res) {
-  db.Article.find({})
+  console.log('inside saved ====================');
+
+  db.Article.find({saved: true})
   .then(function(dbArticle) {
-    res.render("SavedArticles", dbArticle);
+    console.log(dbArticle);
+    res.render("SavedArticles", { data: dbArticle } );
   })
   .catch(function(err) {
     res.send(err);
@@ -152,11 +155,6 @@ app.post("/saved/:id", function(req, res) {
     });
 });
 
-
-
-
-
-
 // Routes for NOTES ==================================
 
 // Get all notes
@@ -173,8 +171,9 @@ app.get("/notes", function(req, res) {
 // Get one specific note
 app.get("/notes/:id", function(req, res) {
   db.Note.findOne({ _id: req.params.id })
-  .then(function(data) {
-    res.json(data);
+  .then(function(dbNotes) {
+    console.log(dbNotes);
+    res.render("displayNotes", {data: dbNotes} );
   })
   .catch(function(err) {
     res.json(err);

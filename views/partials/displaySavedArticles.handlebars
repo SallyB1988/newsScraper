@@ -1,8 +1,11 @@
-<div class="card">
-  <div id="disp-saved-articles" class="card-header">
-    SAVED ARTICLES GO HERE
-  </div>
-  {{!-- <div id="event-list-links" class="list-group list-group-flush overflow"></div> --}}
-</div>
-
 <script src="/js/displaySavedArticles.js"></script>
+
+{{#each data}}
+  <div class="card">
+    <div id="disp-saved-articles" class="card-header col-md-12 my-3">
+        <h3>{{title}}</h3>
+        <button data-id={{_id}} class="notes-btn">Notes</button>
+    </div>
+    {{!-- <div id="event-list-links" class="list-group list-group-flush overflow"></div> --}}
+  </div>
+{{/each}}
