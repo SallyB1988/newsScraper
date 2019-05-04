@@ -24,6 +24,11 @@ app.use(express.static("public"));
 // Connect to the Mongo DB
 mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
 
+
+app.get("/", function(req, res) {
+  res.render("index");
+});
+
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function(req, res) {
   // Make a request via axios for the news section of `ycombinator`
@@ -31,7 +36,8 @@ app.get("/scrape", function(req, res) {
     // Load the html body from axios into cheerio
     var $ = cheerio.load(response.data);
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article h2").each(function(i, element) {
+    let articlesData = $("article h2");
+    articlesData.each(function(i, element) {
       let article = {};
       // Add the text and href of every link, and save them as properties of the result object
       article.title = $(element).children("a").text();
@@ -47,8 +53,18 @@ app.get("/scrape", function(req, res) {
           console.log(err);
         });
       });
-    });
-    res.send("Scraping complete");
+      // console.log(articlesData.length);
+      // return(articlesData.length)
+    })
+    .then(
+      db.Article.find()
+      .then(function(articles) {
+        console.log(articles.length);
+        res.send(articles.length)
+      })
+      )
+      res.send("Articles Scraped");
+    // res.render("index");
   });
 
 // Get all articles

@@ -1,10 +1,17 @@
 // Grab the articles as a json
-function showArticles() {
-  console.log("********* GETTING DATAT ***************");
-  $.getJSON("/articles", function(data) {
-    // Display each article
+window.onload = function() {
+  let $articles = $("#articles");
+   // Get the articles
+  $.ajax({
+    type: "GET",
+    url: "/articles"
+  })
+  .then(function(data) {  // update the screen
+    console.log("**************************************");
+    console.log(data);
+    $articles.empty();
     for (var i=0; i<data.length; i++) {
-      $("#articles").append(`
+      $articles.append(`
       <div class="article-card">
       <h3>${data[i].title}</h3>
       <p>${data[i].link}</p>
@@ -12,30 +19,51 @@ function showArticles() {
       </div>
       `);
     }
-  });
+  })
+
 }
 
+// Click scrape button function
+$(document).on("click", "#scrape", function() {
+  console.log("yaaaaa");
+  // Run a GET request to scrape the articles
+  $.ajax({
+    method: "GET",
+    url: "/scrape",
+  })
+    .then(function(msg) {
+      alert(msg);
+      // location.reload();
+    // })
+    // .then(function() {
+      
+      $.ajax({
+        method: "GET",
+        url: "/articles",
+      })
+      .then(function(data) {
+        let $articles = $("#articles");
 
-// When you click the scrape button  *** I CANT GET THIS TO WORK. THE PAGE WONT REFRESH
-// $(document).on("click", "#scrape", function() {
-//   // Run a GET request to scrape the articles
-//   $.ajax({
-//     method: "GET",
-//     url: "/scrape",
-//   })
-//     .then(function() {
-//       // Log the response
-//       // Empty the articles section
-//       // $("#articles").empty();
-//       // showArticles();
-//       console.log("done yaya");
-//       location.reload();
-//     });
+        console.log("**************************************");
+        console.log(data);
+        console.log(data.length);
+        $articles.empty();
+        for (var i=0; i<data.length; i++) {
+          $articles.append(`
+          <div class="article-card">
+          <h3>${data[i].title}</h3>
+          <p>${data[i].link}</p>
+          <hr>
+          </div>
+          `);
+        }
+      })
+    });
 
-//   // Also, remove the values entered in the input and textarea for note entry
-//   $("#titleinput").val("");
-//   $("#bodyinput").val("");
-// });
+  // Also, remove the values entered in the input and textarea for note entry
+  // $("#titleinput").val("");
+  // $("#bodyinput").val("");
+});
 
 
 // Whenever someone clicks a p tag
@@ -102,4 +130,4 @@ $(document).on("click", "#savenote", function() {
 });
 
 
-showArticles();
+// showArticles();
