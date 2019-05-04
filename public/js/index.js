@@ -83,3 +83,10 @@ $(document).on("click", "#scrape", function() {
   // $("#titleinput").val("");
   // $("#bodyinput").val("");
 });
+
+// Click saved button function - this could be done better!
+$(document).on("click", "#btn-saved", function() {
+      location.replace("/saved")
+});
+
+

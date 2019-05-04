@@ -101,8 +101,45 @@ app.get("/articles/:id", function(req, res) {
   });
 });
 
-// POST a note on a specific article
+// POST update saved value of specific article
 app.post("/articles/:id", function(req, res) {
+  console.log("=============================");
+  console.log(req.params.id);
+  db.Article.findOneAndUpdate({ _id: req.params.id }, {$set: {"saved": true }}, { new: true })
+  .then(function(data) {
+    res.json(data);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+});
+
+// Routes for SAVED articles =========================
+// Get all saved articles
+app.get("/saved", function(req, res) {
+  db.Article.find({})
+  .then(function(dbArticle) {
+    res.render("SavedArticles", dbArticle);
+  })
+  .catch(function(err) {
+    res.send(err);
+  });
+});
+
+// Get one specific saved article
+app.get("/saved/:id", function(req, res) {
+  db.Article.findOne({ _id: req.params.id })
+  .populate("notes")
+  .then(function(dbArticle) {
+    res.json(dbArticle);
+  })
+  .catch(function(err) {
+    res.json(err);
+  });
+});
+
+// POST a note on a specific saved article
+app.post("/saved/:id", function(req, res) {
   db.Note.create(req.body)
     .then(function(dbNote) {
       return db.Article.findOneAndUpdate({ _id: req.params.id }, {$push: { notes: dbNote._id }}, { new: true });
@@ -114,6 +151,10 @@ app.post("/articles/:id", function(req, res) {
       res.json(err);
     });
 });
+
+
+
+
 
 
 // Routes for NOTES ==================================

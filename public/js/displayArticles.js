@@ -33,10 +33,6 @@ window.onload = function() {
     // })
 }
 
-// $eventsDisplay.on("click", ".listed-event", function(event) {
-//   $moreInfoDisplay.html($(this).attr("data-desc"));
-//   $moreInfoTitle.html($(this).attr("data-title"));
-// })
 
 /**
  * 
@@ -44,11 +40,34 @@ window.onload = function() {
  */
 const articleCard = (data) => {
   let htmlStr =  `
-      <article data-id=${data._id} class="article-card">
-      <h3 data-id=${data._id}>${data.title}</h3>
-      <a data-id=${data._id} href="${data.link}">Read Article</a>
-      <hr>
-      </article>
-      `;
+  <article data-id=${data._id} class="article-card">
+  <h3 data-id=${data._id}>${data.title}</h3>
+  <a data-id=${data._id} href="${data.link}">Read Article</a>
+  <button class="save-article" data-id=${data._id}>Save Article</button>
+  <hr>
+  </article>
+  `;
   return(htmlStr);
 }
+
+$(document).on("click",  ".save-article", function() {
+  let id = $(this).attr("data-id");
+  console.log(id);
+
+  $.ajax({
+    headers: {
+      "Content-Type": "application/json"
+    },
+    type: "POST",
+    url: `/articles/${id}`
+    })
+    .then(function (data) {
+      // var articles = data.articles;
+      console.log(data);
+
+    })
+})
+// $eventsDisplay.on("click", ".listed-event", function(event) {
+//   $moreInfoDisplay.html($(this).attr("data-desc"));
+//   $moreInfoTitle.html($(this).attr("data-title"));
+// })

@@ -1,15 +1,19 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 {{!-- <script src="/public/app.js"></script> --}}
+<script src="/js/savedArticles.js"></script>
 
 <div class="container">
-    <div id="wrapper">
+  <div class="row">
+    <div id="scraper-titlebar" class="mx-auto">
       <h1>Note Scraper</h1>
- 
-      <h2 id="article-titlebar">Saved Articles</h2>
-      <div id="articles">{{> displaySavedArticles}}</div>
-      <div id="notes">{{> displayNotes}}</div>
     </div>
-    {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}
-
+  </div>
+  <div class="row">
+    <div class="my-4 mx-auto">
+      <h2 id="article-titlebar">SAVED Articles</h2>
+    </div>
+    <div class="row">
+      <div id="articles" class="mx-auto">{{> displayArticles}}</div>
+    </div>
+  </div>
 </div>
-

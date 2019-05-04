@@ -6,7 +6,7 @@ window.onload = function() {
       "Content-Type": "application/json"
     },
     type: "GET",
-    url: "/articles"// SALLY chagne this to be saved route
+    url: "/saved"// SALLY chagne this to be saved route
     })
     .then(function (data) {
       // var articles = data.articles;
