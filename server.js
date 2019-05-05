@@ -39,12 +39,17 @@ mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
 
 // Load index page
 app.get("/", function(req, res) {
-  res.render("index");
+  db.Article.find()
+  .then(function(dbArticle) {
+    res.render("index", { data: dbArticle } );
+  })
+  .catch(function(err) {
+    res.send(err);
+  });
 });
 
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function(req, res) {
-  let numArticles = 0;
   // Make a request via axios for the news section of the New York Times
 
   axios.get("https://www.nytimes.com/").then(function(response) {
@@ -53,10 +58,9 @@ app.get("/scrape", function(req, res) {
     var $ = cheerio.load(response.data);
 
     $("div.css-6p6lnl").each(function(i, element) {
-      numArticles++;
       let article = {};
       article.title = $(element).find('h2').text();     
-      article.link = $(element).children().attr("href");
+      article.link = "https://www.nytimes.com" + $(element).children().attr("href");
   
       article.summary = $(element).find('li').text();
       if (article.summary == '') {  // Some summaries are in paragraph tags instead of li
@@ -74,7 +78,7 @@ app.get("/scrape", function(req, res) {
       });
       })
       .then(function() {
-      res.send(`${numArticles} articles found`)
+      res.send(`Articles Scraped`)
       })
 
   });

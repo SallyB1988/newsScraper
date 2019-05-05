@@ -1,4 +1,23 @@
-  <div id="disp-articles" class="card-header">
-  </div>
-
 <script src="/js/displayArticles.js"></script>
+
+  <div id="disp-articles" class="card-header">
+  {{#each data}}
+    <div class="card">
+    <div class="card-header">
+      <h3 data-id=${{_id}}>{{title}}</h3>
+    </div>
+    <div class="card-body">
+      <p class="article-summary">{{summary}}</p>
+      <div class="d-flex justify-content-between article-buttons">
+        <a data-id={{_id}} href="{{link}}">Read Article</a>
+        {{#if saved}}
+          <p>Article has been saved</p>
+        {{else}}
+          <button class="save-article" data-id={{_id}}>Save Article</button>
+        {{/if}}
+      </div>
+    </div>
+    </div>
+  {{/each}}
+
+  </div>
