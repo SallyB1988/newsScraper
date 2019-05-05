@@ -37,43 +37,46 @@ app.set("view engine", "handlebars");
 mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
 
 
-  // Load index page
-  app.get("/", function(req, res) {
-    res.render("index");
-  });
+// Load index page
+app.get("/", function(req, res) {
+  res.render("index");
+});
 
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function(req, res) {
-  console.log('inside scraper');
-  // Make a request via axios for the news section of `ycombinator`
-  axios.get("http://www.echojs.com/").then(function(response) {
-    // Load the html body from axios into cheerio
+  let numArticles = 0;
+  // Make a request via axios for the news section of the New York Times
+
+  axios.get("https://www.nytimes.com/").then(function(response) {
+
+    // Load the Response into cheerio and save it to the $ variable
     var $ = cheerio.load(response.data);
-    // Now, we grab every h2 within an article tag, and do the following:
-    let articlesData = $("article h2");
-    articlesData.each(function(i, element) {
+
+    $("div.css-6p6lnl").each(function(i, element) {
+      numArticles++;
       let article = {};
-      // Add the text and href of every link, and save them as properties of the result object
-      article.title = $(element).children("a").text();
-      article.link = $(element).children("a").attr("href");
+      article.title = $(element).find('h2').text();     
+      article.link = $(element).children().attr("href");
+  
+      article.summary = $(element).find('li').text();
+      if (article.summary == '') {  // Some summaries are in paragraph tags instead of li
+        article.summary = $(element).find('p').text();
+      }
+
       // Create a new Article using the `article` object built from scraping
       db.Article.create(article)
         .then(function(dbArticle) {
-          // View the added result in the console - this is slow
           // console.log(dbArticle);
         })
         .catch(function(err) {
-          // If an error occurred, log it
           console.log(err);
         });
       });
-      // console.log(articlesData.length);
-      return(articlesData.length)
-    })
-    .then(function(num) {
-      res.send(`${num} articles found`)
-      // res.render("/", );
-    })
+      })
+      .then(function() {
+      res.send(`${numArticles} articles found`)
+      })
+
   });
 
 // Routes for ARTICLES ==================================
@@ -103,8 +106,6 @@ app.get("/articles/:id", function(req, res) {
 
 // POST update saved value of specific article
 app.post("/articles/:id", function(req, res) {
-  console.log("=============================");
-  console.log(req.params.id);
   db.Article.findOneAndUpdate({ _id: req.params.id }, {$set: {"saved": true }}, { new: true })
   .then(function(data) {
     res.json(data);
@@ -117,11 +118,9 @@ app.post("/articles/:id", function(req, res) {
 // Routes for SAVED articles =========================
 // Get all saved articles
 app.get("/saved", function(req, res) {
-  console.log('inside saved ====================');
 
   db.Article.find({saved: true})
   .then(function(dbArticle) {
-    console.log(dbArticle);
     res.render("SavedArticles", { data: dbArticle } );
   })
   .catch(function(err) {
@@ -177,8 +176,6 @@ app.post("/saved/:articleId/:noteId", function(req, res) {
     });
 });
 
-
-
 // Routes for NOTES ==================================
 
 // Get all notes
@@ -198,7 +195,6 @@ app.get("/notes/:id", function(req, res) {
   .then(function(dbNotes) {
     console.log(dbNotes);
     res.json(dbNotes)
-    // res.render("displayNotes", {data: dbNotes} );
   })
   .catch(function(err) {
     res.json(err);
