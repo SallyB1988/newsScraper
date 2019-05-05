@@ -106,7 +106,8 @@ app.get("/articles/:id", function(req, res) {
 
 // POST update saved value of specific article
 app.post("/articles/:id", function(req, res) {
-  db.Article.findOneAndUpdate({ _id: req.params.id }, {$set: {"saved": true }}, { new: true })
+  db.Article.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true })
+  // db.Article.findOneAndUpdate({ _id: req.params.id }, {$set: {"saved": true }}, { new: true })
   .then(function(data) {
     res.json(data);
   })

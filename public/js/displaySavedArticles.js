@@ -11,6 +11,23 @@ $(document).on("click", ".notes-btn", function() {
 });
 
 
+$(document).on("click", ".remove-saved-btn", function() {
+  let id = $(this).attr("data-id");
+  $.ajax({
+    type: "POST",
+    url: `/articles/${id}`,
+    data: {
+      saved: false,
+    }
+    })
+    .then(function (data) {
+      // var articles = data.articles;
+      location.reload();
+    })
+  // Empty the notes from the note section
+  // refreshNotesRegion(selectedArticleId);
+});
+
 
 // When you click the savenote button
 $(document).on("click", "#savenote", function() {
@@ -88,10 +105,6 @@ $(document).on("click", ".delete-note", function() {
     .then(function() {
       refreshNotesRegion(selectedArticleId);
     });
-
-  // // Also, remove the values entered in the input and textarea for note entry
-  // $("#titleinput").val("");
-  // $("#bodyinput").val("");
 });
 
 
