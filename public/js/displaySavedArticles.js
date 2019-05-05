@@ -41,6 +41,38 @@ $(document).on("click", "#savenote", function() {
   $("#bodyinput").val("");
 });
 
+// When you click the updatenote button
+$(document).on("click", "#updatenote", function() {
+  // Grab the id associated with the article from the submit button
+  var articleId = $(this).attr("data-id");
+  var noteId = $(this).attr("data-note-id");
+
+  // Run a POST request to change the note, using what's entered in the inputs
+  $.ajax({
+    method: "POST",
+    url: `/saved/${articleId}/${noteId}`,
+    data: {
+      // Value taken from title input
+      title: $("#titleinput").val(),
+      // Value taken from note textarea
+      body: $("#bodyinput").val()
+    }
+  })
+    // Note added to database -- refresh the notes display
+    .then(function(data) {
+      // Log the response
+      console.log(data);
+      refreshNotesRegion(selectedArticleId);
+
+    });
+
+  // Also, remove the values entered in the input and textarea for note entry
+  $("#titleinput").val("");
+  $("#bodyinput").val("");
+});
+
+
+
 // When you click the X to delete a note
 $(document).on("click", ".delete-note", function() {
   // Grab the id associated with the article from the submit button
@@ -75,28 +107,14 @@ $(document).on("click", ".existing-note-title", function() {
   })
   .then(function(noteData) {
 
-    // may need to change this to a 'edit existion note' option so it can
-    // go to a different route for updating the data
-    refreshNotesRegion(selectedArticleId, noteData);
+    // the last parameter tells it that the note is being opened for editing/viewing
+    refreshNotesRegion(selectedArticleId, noteData, true );
   })
 
-
-  // Run an UPDATE request to remove the note
-  // $.ajax({
-  //   method: "UPDATE",
-  //   url: "/notes/" + thisId,
-  // })
-  //   // Notes Record Deleted -- refresh the Notes display
-  //   .then(function() {
-  //   });
-
-  // // Also, remove the values entered in the input and textarea for note entry
-  // $("#titleinput").val("");
-  // $("#bodyinput").val("");
 });
 
 
-const refreshNotesRegion = (articleId, note={  title: '', body: '' }) => {
+const refreshNotesRegion = (articleId, note={  title: '', body: '' }, update=false ) => {
   $("#disp-notes-form").empty();
   // Now make an ajax call for the Article
   $.ajax({
@@ -121,19 +139,24 @@ const refreshNotesRegion = (articleId, note={  title: '', body: '' }) => {
       
       $("#disp-notes-form").append(noteTitleStr);
     }
-    $("#disp-notes-form").append(noteForm(data, note));
+    $("#disp-notes-form").append(noteForm(data, note, update));
     
-    //=================================================
   });
 };
 
-const noteForm = (data, note) => {
+const noteForm = (data, note, update) => {
+  let buttonStr = 'Add Note';
+  let idname = 'savenote';
+  if (update) {
+    buttonStr = 'Update Note';
+    idname = 'updatenote';
+  }
   return(
     `
     <p class="mt-2 note-title" >${data.title}</p>
     <input id='titleinput' name='title' value='${note.title}' >
     <textarea id='bodyinput' name='body'>${note.body}</textarea>
-    <button data-id=${data._id} id='savenote'>Add Note</button>
+    <button data-id=${data._id} data-note-id=${note._id} id=${idname}>${buttonStr}</button>
     `
   )
 }

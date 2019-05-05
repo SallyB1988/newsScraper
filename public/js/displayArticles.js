@@ -39,11 +39,18 @@ window.onload = function() {
  * @param {*} data : Article object
  */
 const articleCard = (data) => {
+  let btnString = "";
+  if (data.saved) {
+    btnString = `<p>Article has been saved</p>`
+  } else {
+    btnString = `<button class="save-article" data-id=${data._id}>Save Article</button>`
+  }
+
   let htmlStr =  `
   <article data-id=${data._id} class="article-card">
   <h3 data-id=${data._id}>${data.title}</h3>
   <a data-id=${data._id} href="${data.link}">Read Article</a>
-  <button class="save-article" data-id=${data._id}>Save Article</button>
+  ${btnString}
   <hr>
   </article>
   `;

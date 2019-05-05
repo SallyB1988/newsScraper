@@ -145,7 +145,11 @@ app.get("/saved/:id", function(req, res) {
 app.post("/saved/:id", function(req, res) {
   db.Note.create(req.body)
     .then(function(dbNote) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, {$push: { notes: dbNote._id }}, { new: true });
+      return db.Article.findOneAndUpdate(
+        { _id: req.params.id },
+         {$push: { notes: dbNote._id }},
+         { new: true }
+        );
     })
     .then(function(dbArticle) {
       res.json(dbArticle);
@@ -154,6 +158,26 @@ app.post("/saved/:id", function(req, res) {
       res.json(err);
     });
 });
+
+// POST to update a note on a specific saved article
+app.post("/saved/:articleId/:noteId", function(req, res) {
+  db.Note.updateOne( { _id: req.params.noteId }, req.body, { upsert: true })
+    .then(function(dbNote) {
+      return db.Article.findOneAndUpdate(
+        { _id: req.params.articleId },
+         {$push: { notes: dbNote._id }},
+         { new: true }
+        );
+    })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+});
+
+
 
 // Routes for NOTES ==================================
 
