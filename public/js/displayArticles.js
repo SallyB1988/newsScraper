@@ -1,20 +1,4 @@
-let $displayArticles = $("#disp-articles");
-
-window.onload = function() {
-  // $.ajax({
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   },
-  //   type: "GET",
-  //   url: "/articles"
-  //   })
-  //   .then(function (data) {
-  //     data.forEach(a => {
-  //       $displayArticles.append(articleCard(a))
-  //     });
-
-  //   })
-}
+window.onload = function() {}
 
 /**
  * 

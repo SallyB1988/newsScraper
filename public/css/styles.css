@@ -18,11 +18,36 @@
 textarea, input {
   display: block;
   width: 100%;
-  background-color: #FCF5C7;
+  background-color: rgb(250, 250, 250);
 }
 input {
   height: 36px;
   /* font-size: 24px; */
+}
+
+#scraper-titlebar {
+  height: 300px;
+  background-image: url("../images/newspaper2.jpg");
+  background-size: cover;
+}
+
+.header-buttons {
+  position: relative;
+  top: 15%;
+} 
+
+.title-button {
+  background: rgb(133, 133, 163);
+}
+
+.link-button {
+  color:black;
+}
+
+#headline {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 6em;
+  margin-top: 80px;
 }
 
 .note-title {
@@ -36,6 +61,12 @@ input {
   text-transform: uppercase;
   color: grey;
 }
+.existing-note {
+  height: 1.2em;
+  margin: 20px;
+  background-color: rgb(250, 250, 250);
+}
+
 .delete-note {
   font-size: 10px;
   height: 20px;

@@ -1,7 +1,9 @@
 
 let selectedArticleId;
 window.onload = function() {
-
+  selectedArticleId = $(this).attr("data-id");
+  // Empty the notes from the note section
+  refreshNotesRegion(selectedArticleId);
 }
 
 $(document).on("click", ".notes-btn", function() {
@@ -128,7 +130,9 @@ $(document).on("click", ".existing-note-title", function() {
 
 
 const refreshNotesRegion = (articleId, note={  title: '', body: '' }, update=false ) => {
-  $("#disp-notes-form").empty();
+  $("#disp-saved-notes-form").empty();
+  $("#existing-notes").empty();
+
   // Now make an ajax call for the Article
   $.ajax({
     method: "GET",
@@ -138,21 +142,19 @@ const refreshNotesRegion = (articleId, note={  title: '', body: '' }, update=fal
   .then(function(data) {
     // If there are notes in the article, display their titles and a button for deleting the note
     // Clicking on the title allows the user to update the note
+    let noteTitleStr = "<h3 class='my-2'>Existing Notes Notes</h3>";
     if (data.notes.length > 0) {
-      let noteTitleStr = "";
       data.notes.forEach((n) => {
         noteTitleStr += `
-        <div class="row">
-        <div class='col-md-1'></div>
-        <p class="col-md-9 p-0 m-0 existing-note-title" data-id=${n._id}>${n.title}</p>
-        <button data-id=${n._id} class="col-md-1 p-0 m-0 delete-note">X</button>
+        <div class="w-100 d-flex justify-content-between existing-note">
+        <p class="existing-note-title" data-id=${n._id}>${n.title}</p>
+        <button data-id=${n._id} class="delete-note">X</button>
         </div>
         `
       })
-      
-      $("#disp-notes-form").append(noteTitleStr);
     }
-    $("#disp-notes-form").append(noteForm(data, note, update));
+    $("#disp-saved-notes-form").html(noteForm(data, note, update));
+    $("#existing-notes").html(noteTitleStr);
     
   });
 };
@@ -166,8 +168,11 @@ const noteForm = (data, note, update) => {
   }
   return(
     `
-    <p class="mt-2 note-title" >${data.title}</p>
+    <h3 class="my-2">Add/Update Notes</h3>
+    <p class="mt-4 mb-2 note-title" >${data.title}</p>
+    <p>Note Title:</p>
     <input id='titleinput' name='title' value='${note.title}' >
+    <p class="mt-2 mb-1">Message:</p>
     <textarea id='bodyinput' name='body'>${note.body}</textarea>
     <button data-id=${data._id} data-note-id=${note._id} id=${idname}>${buttonStr}</button>
     `

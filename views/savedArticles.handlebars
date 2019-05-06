@@ -1,31 +1,19 @@
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{{!-- <script src="/js/savedArticles.js"></script> --}}
-
-<div class="container">
+<div class="flex-container">
   <div class="row">
-    <div id="scraper-titlebar" class="mx-auto">
-      <h1>Note Scraper</h1>
-      <a href="/"><button>All Articles</button></a>
 
+    <div id="scraper-titlebar" class="w-75 mx-auto">
+      <h2 id="headline" class="text-center">Saved Articles</h2>
+      <div class="text-center header-buttons">
+        <button class="px-2 py-1 mx-1 title-button"><a class="link-button" href="/">All Articles</a></button>
+      </div>
+    </div>
+
+    <div class="row mx-auto">
+      <div class="col-md-8 mx-auto">{{> displaySavedArticles}}</div>
+      <div class="col-md-4 mx-auto">{{> displayNotes}}</div>
     </div>
   </div>
-  <div class="row">  <!-- row  containing column headers -->
-    <div class="col-md-8">
-      <h2 id="article-titlebar">SAVED Articles</h2>
-    </div>
-    <div class="col-md-4">
-      <h2 id="article-titlebar">Notes</h2>
-    </div>
-  </div>
 
-  <div class="row">  <!-- row  containing column data -->
-    <div class="col-md-8 my-4 mx-auto">
-      <div class="mx-auto">{{> displaySavedArticles}}</div>
-    </div>
-
-    <div class="col-md-4 my-4 mx-auto">
-      <div class="mx-auto">{{> displayNotes}}</div>
-    </div>
-
-  </div>
 </div>
+
+{{!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> --}}

@@ -1,22 +1,18 @@
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-{{!-- <script src="/public/app.js"></script> --}}
-<script src="/js/index.js"></script>
-
 <div class="flex-container">
   <div class="row">
-    <div id="scraper-titlebar" class="mx-auto">
-      <h1>Note Scraper</h1>
-      <button id="scrape">Scrape</button>
 
-      <a href="/saved"><button>Saved Articles</button></a>
+    <div id="scraper-titlebar" class="w-75 mx-auto">
+      <h2 id="headline" class="text-center">Scraper News</h2>
+      <div class="text-center header-buttons">
+        <button id="scrape" class="px-2 py-1 mx-1 title-button">Scrape</button>
+        <button class="px-2 py-1 mx-1 title-button"><a class="link-button" href="/saved">Saved Articles</a></button>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="my-4 mx-auto">
-      <h2 id="article-titlebar">Current Articles</h2>
-    </div>
-    <div class="row">
-      <div id="articles" class="mx-auto">{{> displayArticles}}</div>
+
+    <div class="row mt-5 mx-auto">
+        <div id="articles" class="col-md-10 mx-auto">{{> displayArticles}}</div>
     </div>
   </div>
 </div>
+
+<script src="/js/index.js"></script>
