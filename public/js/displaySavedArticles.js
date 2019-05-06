@@ -9,6 +9,7 @@ window.onload = function() {
 $(document).on("click", ".notes-btn", function() {
   selectedArticleId = $(this).attr("data-id");
   // Empty the notes from the note section
+  $("#notes-modal").modal("show");
   refreshNotesRegion(selectedArticleId);
 });
 
@@ -142,7 +143,8 @@ const refreshNotesRegion = (articleId, note={  title: '', body: '' }, update=fal
   .then(function(data) {
     // If there are notes in the article, display their titles and a button for deleting the note
     // Clicking on the title allows the user to update the note
-    let noteTitleStr = "<h3 class='my-2'>Existing Notes Notes</h3>";
+    let noteTitleStr = "<p class='m-2 note-title'>Existing Notes</p>";
+    noteTitleStr += "<div class='existing-notes-region'>"
     if (data.notes.length > 0) {
       data.notes.forEach((n) => {
         noteTitleStr += `
@@ -153,6 +155,7 @@ const refreshNotesRegion = (articleId, note={  title: '', body: '' }, update=fal
         `
       })
     }
+    noteTitleStr += "</div>"
     $("#disp-saved-notes-form").html(noteForm(data, note, update));
     $("#existing-notes").html(noteTitleStr);
     
@@ -168,13 +171,12 @@ const noteForm = (data, note, update) => {
   }
   return(
     `
-    <h3 class="my-2">Add/Update Notes</h3>
-    <p class="mt-4 mb-2 note-title" >${data.title}</p>
-    <p>Note Title:</p>
-    <input id='titleinput' name='title' value='${note.title}' >
-    <p class="mt-2 mb-1">Message:</p>
-    <textarea id='bodyinput' name='body'>${note.body}</textarea>
-    <button data-id=${data._id} data-note-id=${note._id} id=${idname}>${buttonStr}</button>
+    <p class="m-2 note-title" ><u>${data.title}</u></p>
+    <p class="m-2 font-weight-bold" >Note Title:</p>
+    <input id='titleinput' class="m-2 modal-field" name='title' value='${note.title}' >
+    <p class="m-2 mb-1 font-weight-bold">Message:</p>
+    <textarea id='bodyinput' class="m-2 modal-field" name='body'>${note.body}</textarea>
+    <button class="m-2" data-id=${data._id} data-note-id=${note._id} id=${idname}>${buttonStr}</button>
     `
   )
 }

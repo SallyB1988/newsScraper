@@ -1,28 +1,44 @@
-#wrapper {
+/* #wrapper {
   width: 960px;
   margin-left: auto;
   margin-right: auto;
   padding-top: 5%;
   background-color: rgb(255, 250, 246);
-}
-#articles {
+} */
+/* #articles {
   display: inline-block;
   overflow: auto;
   width: 60%;
   height: 700px;
-}
-#notes {
+} */
+/* #notes {
   float: right;
   width: 30%;
-}
-textarea, input {
+} */
+
+#disp-saved-notes-form, #existing-notes {
+  width: 95%;
   display: block;
-  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+textarea, input {
+  /* display: block; */
+  /* width: 100%; */
   background-color: rgb(250, 250, 250);
 }
 input {
   height: 36px;
   /* font-size: 24px; */
+}
+
+.modal-field {
+  width: 90% !important;
+}
+
+.modal-header {
+  background-color: rgb(204, 204, 203);
 }
 
 #scraper-titlebar {
@@ -67,12 +83,23 @@ input {
   background-color: rgb(250, 250, 250);
 }
 
+
+
+.existing-notes-region {
+  margin-top: 0px;
+  height: 100px;
+  width: 90%;
+  margin: 20px;
+  overflow: scroll;
+  background-color: rgb(250, 250, 250);
+}
+
 .delete-note {
   font-size: 10px;
   height: 20px;
 }
 textarea {
-  height: 200px;
+  height: 170px;
   font-size: 18px;
 }
 

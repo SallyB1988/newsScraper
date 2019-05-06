@@ -51,7 +51,7 @@ app.get("/", function(req, res) {
 // Scrape data from one site and place it into the mongodb db
 app.get("/scrape", function(req, res) {
   // Make a request via axios for the news section of the New York Times
-
+  // document.getElementById("#articles").innerHTML("Scraping Articles... please wait...")
   axios.get("https://www.nytimes.com/").then(function(response) {
 
     // Load the Response into cheerio and save it to the $ variable
