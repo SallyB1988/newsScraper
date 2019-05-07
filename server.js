@@ -35,7 +35,7 @@ app.set("view engine", "handlebars");
 
 // Connect to the Mongo DB
 // mongoose.connect("mongodb://localhost/newsScraper", { useNewUrlParser: true });
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsScraper";
+var MONGODB_URI = "mongodb://heroku_4bmg1nff:vpgpa70q8g15tjpg6ice9viutl@ds151876.mlab.com:51876/heroku_4bmg1nff" || "mongodb://localhost/newsScraper";
 mongoose.connect(MONGODB_URI);
 
 
