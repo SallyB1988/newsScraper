@@ -128,7 +128,7 @@ app.get("/saved", function (req, res) {
 
   db.Article.find({ saved: true })
     .then(function (dbArticle) {
-      res.render("SavedArticles", { data: dbArticle });
+      res.render("savedArticles", { data: dbArticle });
     })
     .catch(function (err) {
       res.send(err);
