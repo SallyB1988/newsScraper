@@ -1,18 +1,24 @@
 <script src="/js/displayArticles.js"></script>
 
   {{#each data}}
-    <div class="card">
+    <div class="card my-2">
     <div class="card-header">
-      <h3 data-id=${{_id}}>{{title}}</h3>
+      <h5 data-id=${{_id}}>{{title}}</h3>
     </div>
-    <div class="card-body">
-      <p class="article-summary">{{summary}}</p>
-      <div class="d-flex justify-content-between article-buttons">
+    <div class="card-body pt-1 pb-0">
+      <p class="article-summary">
+        {{#if summary}}
+          {{summary}}
+        {{else}}
+          No Summary Provided
+        {{/if}}
+      </p>
+      <div class="d-flex justify-content-between pb-0 article-buttons">
         <a data-id={{_id}} href="{{link}}">Read Article</a>
         {{#if saved}}
           <p>Article has been saved</p>
         {{else}}
-          <button class="save-article" data-id={{_id}}>Save Article</button>
+          <button class="save-article mb-2" data-id={{_id}}>Save Article</button>
         {{/if}}
       </div>
     </div>

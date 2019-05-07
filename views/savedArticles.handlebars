@@ -1,17 +1,16 @@
-
-<div class="flex-container">
+<div class="container">
   <div class="row">
 
-    <div id="scraper-titlebar" class="w-75 mx-auto">
+    <div id="scraper-titlebar" class="mx-auto">
       <h2 id="headline" class="text-center">Saved Articles</h2>
-      <div class="text-center header-buttons">
+      <div class="py-3 text-center header-buttons">
         <button class="px-2 py-1 mx-1 title-button"><a class="link-button" href="/">All Articles</a></button>
       </div>
     </div>
 
-    <div class="row mx-auto">
+    <div class="row my-2 mx-auto">
       <div class="col-md-12 mx-auto">{{> displaySavedArticles}}</div>
-       <div class="col-md-8 mx-auto">{{> displayNotes}}</div>
+      <div class="col-md-12 mx-auto">{{> displayNotes}}</div>
     </div>
   </div>
 

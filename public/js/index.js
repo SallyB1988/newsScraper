@@ -19,7 +19,7 @@ $(document).on("click", "#scrape", function() {
     url: "/scrape",
   })
     .then(function(msg) {
-      // alert(msg);
+      alert(msg);
       location.reload();
     });
 });

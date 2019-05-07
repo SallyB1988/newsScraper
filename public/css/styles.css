@@ -1,20 +1,11 @@
-/* #wrapper {
-  width: 960px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-top: 5%;
-  background-color: rgb(255, 250, 246);
-} */
-/* #articles {
-  display: inline-block;
-  overflow: auto;
-  width: 60%;
-  height: 700px;
-} */
-/* #notes {
-  float: right;
-  width: 30%;
-} */
+body {
+  background:
+linear-gradient(45deg, #e3e6e9 45px, transparent 45px)64px 64px,
+linear-gradient(45deg, #e3e6e9 45px, transparent 45px,transparent 91px, #e9eef5 91px, #e9eef5 135px, transparent 135px),
+linear-gradient(-45deg, #e3e6e9 23px, transparent 23px, transparent 68px,#e3e6e9 68px,#e3e6e9 113px,transparent 113px,transparent 158px,#e3e6e9 158px);
+background-color:#e9eef5;
+background-size: 128px 128px;
+}
 
 #disp-saved-notes-form, #existing-notes {
   width: 95%;
@@ -24,13 +15,10 @@
 }
 
 textarea, input {
-  /* display: block; */
-  /* width: 100%; */
   background-color: rgb(250, 250, 250);
 }
 input {
   height: 36px;
-  /* font-size: 24px; */
 }
 
 .modal-field {
@@ -43,21 +31,26 @@ input {
 
 #scraper-titlebar {
   height: 300px;
+  width: 80%;
+  /* width: 80%; */
   background-image: url("../images/newspaper2.jpg");
   background-size: cover;
 }
 
 .header-buttons {
+  background-color: rgba(143, 143, 142, 0.719);
   position: relative;
-  top: 15%;
+  top: 10%;
 } 
 
 .title-button {
-  background: rgb(133, 133, 163);
+  background: rgb(141, 141, 139);
+  color: white;
 }
 
-.link-button {
-  color:black;
+.link-button, .link-button:hover{
+  color: white;
+  text-decoration: none;
 }
 
 #headline {
@@ -79,18 +72,17 @@ input {
 }
 .existing-note {
   height: 1.2em;
+  width: 85%;
   margin: 20px;
   background-color: rgb(250, 250, 250);
 }
-
-
 
 .existing-notes-region {
   margin-top: 0px;
   height: 100px;
   width: 90%;
   margin: 20px;
-  overflow: scroll;
+  overflow-y: scroll;
   background-color: rgb(250, 250, 250);
 }
 

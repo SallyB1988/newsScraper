@@ -1,14 +1,16 @@
-{{!-- <script src="/js/displaySavedArticles.js"></script> --}}
-
 {{#each data}}
-  <div class="card">
-    <div id="disp-saved-articles" class="card-header col-md-12 my-3">
-        <h3>{{title}}</h3>
-        <div class="d-flex justify-content-between">
-          <a data-id={{_id}} href="{{link}}">Read Article</a>
-          <button data-id={{_id}} class="notes-btn">Notes</button>
-          <button data-id={{_id}} class="remove-saved-btn">Remove From Saved</button>
-        </div>
+  <div class="card my-2 w-100">
+    {{!-- <div id="disp-saved-articles" class="card-header col-md-12 my-3"> --}}
+    <div class="card-header">
+      <h5>{{title}}</h5>
+     </div>
+    <div class="card-body pt-1 pb-0">
+      <div class="d-flex justify-content-between py-2 article-buttons">
+        <a data-id={{_id}} href="{{link}}">Read Article</a>
+        <button data-id={{_id}} class="notes-btn">Notes</button>
+        <button data-id={{_id}} class="remove-saved-btn">Remove From Saved</button>
+      </div>
     </div>
+    {{!-- </div> --}}
   </div>
 {{/each}}

@@ -148,7 +148,7 @@ const refreshNotesRegion = (articleId, note={  title: '', body: '' }, update=fal
     if (data.notes.length > 0) {
       data.notes.forEach((n) => {
         noteTitleStr += `
-        <div class="w-100 d-flex justify-content-between existing-note">
+        <div class="d-flex justify-content-between existing-note">
         <p class="existing-note-title" data-id=${n._id}>${n.title}</p>
         <button data-id=${n._id} class="delete-note">X</button>
         </div>

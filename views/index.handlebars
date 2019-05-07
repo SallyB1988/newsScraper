@@ -1,17 +1,16 @@
-<div class="flex-container">
+<div class="container">
   <div class="row">
 
-    <div id="scraper-titlebar" class="w-75 mx-auto">
+    <div id="scraper-titlebar" class="mx-auto">
       <h2 id="headline" class="text-center">Scraper News</h2>
-      <div class="text-center header-buttons">
-        <button id="scrape" class="px-2 py-1 mx-1 title-button">Scrape</button>
-        <button class="px-2 py-1 mx-1 title-button"><a class="link-button" href="/saved">Saved Articles</a></button>
+      <div class="py-3 text-center header-buttons">
+        <button id="scrape" class="px-2 py-1 mx-1 rounded title-button">Scrape</button>
+        <button class="px-2 py-1 mx-1 rounded title-button"><a class="link-button" href="/saved">Saved Articles</a></button>
       </div>
     </div>
 
-    <div class="row mt-5 mx-auto">
-      <div id="scrape-message"></div>
-        <div id="articles" class="col-md-10 mx-auto">{{> displayArticles}}</div>
+    <div class="row my-2 mx-auto">
+        <div id="articles" class="col-md-8 mx-auto">{{> displayArticles}}</div>
     </div>
   </div>
 </div>
